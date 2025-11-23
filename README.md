@@ -21,9 +21,9 @@
         html, body {
             height: 100%;
             width: 100%;
-            min-height: 100vh;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -32,18 +32,21 @@
             min-height: 100vh;
             min-width: 100vw;
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         .container {
             width: 100vw;
-            height: 100vh;
-            max-width: none;
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header, footer {
+            width: 100%;
+            min-width: 0;
             box-sizing: border-box;
         }
 
@@ -53,16 +56,16 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px 0;
-            margin-bottom: 30px;
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100vw;
+            width: 100%;
+            max-width: 1800px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 32px;
             box-sizing: border-box;
         }
 
@@ -88,7 +91,6 @@
             font-size: 28px;
             font-weight: 600;
         }
-
         .logo-subtitle {
             font-size: 14px;
             color: var(--ibm-teal);
@@ -104,16 +106,29 @@
             font-weight: 600;
         }
 
+        .main-content {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         /* Main Grid */
         .main-grid {
             display: grid;
-            grid-template-columns: 320px 1fr 350px;
-            gap: 25px;
-            width: 100vw;
-            height: calc(100vh - 120px); /* Adjust if header/footer height differs */
-            margin: 0;
-            min-height: 0;
+            grid-template-columns: 320px minmax(420px, 1fr) 350px;
+            gap: 32px;
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 32px;
             box-sizing: border-box;
+            align-items: stretch;
+            height: 100%;
+            min-height: 0;
         }
 
         /* Panel Styles */
@@ -124,9 +139,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 25px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
             height: 100%;
             box-sizing: border-box;
-            min-width: 0;
         }
 
         .panel-header {
@@ -194,19 +211,27 @@
         }
 
         /* Chat Panel */
-        .chat-container {
+        .chat-panel {
             display: flex;
             flex-direction: column;
             height: 100%;
         }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            height: 100%;
+            min-height: 0;
+        }
 
         .chat-messages {
-            flex: 1;
+            flex: 1 1 0%;
             overflow-y: auto;
             padding: 20px;
             background: rgba(255, 255, 255, 0.02);
             border-radius: var(--radius);
             margin-bottom: 20px;
+            min-height: 0;
         }
 
         .message {
@@ -224,6 +249,8 @@
             border-radius: 20px;
             max-width: 80%;
             text-align: left;
+            word-break: break-word;
+            background: rgba(0,0,0,0.10);
         }
 
         .message.user .message-bubble {
@@ -317,6 +344,7 @@
         }
 
         /* Status Panel */
+        .status-panel { height: 100%; }
         .status-item {
             background: rgba(255, 255, 255, 0.05);
             border-radius: var(--radius);
@@ -370,7 +398,9 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: var(--radius);
             padding: 30px;
-            margin-top: 40px;
+            margin: 40px 32px 0 32px;
+            max-width: 1800px;
+            box-sizing: border-box;
         }
 
         .impact-title {
@@ -423,12 +453,13 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px 0;
             margin-top: 50px;
+            width: 100%;
         }
-
         .footer-content {
-            width: 100vw;
+            width: 100%;
+            max-width: 1800px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -465,11 +496,15 @@
             animation: pulse 2s infinite;
         }
 
-        /* Responsive */
+        /* Responsive: stack panels vertically and manage padding/gap on small screens */
         @media (max-width: 1200px) {
+            .main-content {
+                padding: 0;
+            }
             .main-grid {
                 grid-template-columns: 1fr;
-                height: auto;
+                gap: 0;
+                padding: 0;
             }
             .skills-panel, .status-panel {
                 display: none;
@@ -480,14 +515,19 @@
             .header-content {
                 flex-direction: column;
                 gap: 15px;
+                padding: 0 10px;
             }
 
             .footer-content {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+                padding: 0 10px;
             }
-
+            .main-grid,
+            .impact-section {
+                padding: 0 10px;
+            }
             .impact-grid {
                 grid-template-columns: 1fr;
             }
@@ -495,142 +535,144 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">C</div>
-                <div>
-                    <div class="logo-text">CORA</div>
-                    <div class="logo-subtitle">Powered by Watsonx Orchestrate</div>
-                </div>
-                <div class="watsonx-badge">watsonx</div>
-            </div>
-            <div class="nav-buttons">
-                <button class="btn btn-secondary" onclick="showBusinessImpact()">Business Impact</button>
-                <button class="btn btn-primary" onclick="showUseCases()">Use Cases</button>
-                <button class="btn btn-teal" onclick="configureSearchApi()">Configure Search</button>
-                <button class="btn btn-teal" onclick="configureWatsonx()">Connect Watsonx</button>
-                <span id="watsonxStatus" style="margin-left:12px;font-size:13px;color:#8C94A7">Watsonx: disconnected</span>
-            </div>
-        </div>
-    </header>
     <div class="container">
-        <!-- Main Content Grid -->
-        <div class="main-grid">
-            <!-- Skills Panel -->
-            <div class="panel skills-panel">
-                <div class="panel-header">
-                    <div class="panel-title">Digital Skills</div>
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">C</div>
+                    <div>
+                        <div class="logo-text">CORA</div>
+                        <div class="logo-subtitle">Powered by Watsonx Orchestrate</div>
+                    </div>
+                    <div class="watsonx-badge">watsonx</div>
                 </div>
-                <div class="skills-grid">
-                    <div class="skill-card active" onclick="activateSkill(this, 'workflow-orchestration')">
-                        <div class="skill-icon">🔄</div>
-                        <div class="skill-name">Workflow Orchestration</div>
-                        <div class="skill-desc">Coordinate tasks across multiple systems and tools</div>
-                    </div>
-                    <div class="skill-card" onclick="activateSkill(this, 'document-automation')">
-                        <div class="skill-icon">📄</div>
-                        <div class="skill-name">Document Automation</div>
-                        <div class="skill-desc">Generate reports, summaries, and process documents</div>
-                    </div>
-                    <div class="skill-card" onclick="activateSkill(this, 'data-processing')">
-                        <div class="skill-icon">📊</div>
-                        <div class="skill-name">Data Processing</div>
-                        <div class="skill-desc">Analyze and transform complex datasets automatically</div>
-                    </div>
-                    <div class="skill-card" onclick="activateSkill(this, 'customer-service')">
-                        <div class="skill-icon">💬</div>
-                        <div class="skill-name">Customer Service</div>
-                        <div class="skill-desc">Automate responses and ticket routing</div>
-                    </div>
-                    <div class="skill-card" onclick="activateSkill(this, 'hr-onboarding')">
-                        <div class="skill-icon">👥</div>
-                        <div class="skill-name">HR Onboarding</div>
-                        <div class="skill-desc">Streamline employee onboarding processes</div>
-                    </div>
-                    <div class="skill-card" onclick="activateSkill(this, 'it-support')">
-                        <div class="skill-icon">🔧</div>
-                        <div class="skill-name">IT Support</div>
-                        <div class="skill-desc">Automate ticket resolution and system monitoring</div>
-                    </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showBusinessImpact()">Business Impact</button>
+                    <button class="btn btn-primary" onclick="showUseCases()">Use Cases</button>
+                    <button class="btn btn-teal" onclick="configureSearchApi()">Configure Search</button>
+                    <button class="btn btn-teal" onclick="configureWatsonx()">Connect Watsonx</button>
+                    <span id="watsonxStatus" style="margin-left:12px;font-size:13px;color:#8C94A7">Watsonx: disconnected</span>
                 </div>
             </div>
-            <!-- Chat Panel -->
-            <div class="panel chat-panel">
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="message cora">
-                            <div class="message-bubble">
-                                <strong>Welcome to CORA powered by Watsonx Orchestrate!</strong><br><br>
-                                I'm designed to transform how you work by automating repetitive tasks and orchestrating workflows across your tools. I can help you:<br><br>
-                                • 🤖 Automate multi-step business processes<br>
-                                • 📊 Generate intelligent reports and summaries<br>
-                                • 🔄 Coordinate workflows across systems<br>
-                                • 💼 Handle routine customer service tasks<br>
-                                • 👥 Streamline HR and onboarding processes<br><br>
-                                What repetitive task would you like me to automate today?
+        </header>
+        <div class="main-content">
+            <!-- Main Content Grid -->
+            <div class="main-grid">
+                <!-- Skills Panel -->
+                <div class="panel skills-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Digital Skills</div>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-card active" onclick="activateSkill(this, 'workflow-orchestration')">
+                            <div class="skill-icon">🔄</div>
+                            <div class="skill-name">Workflow Orchestration</div>
+                            <div class="skill-desc">Coordinate tasks across multiple systems and tools</div>
+                        </div>
+                        <div class="skill-card" onclick="activateSkill(this, 'document-automation')">
+                            <div class="skill-icon">📄</div>
+                            <div class="skill-name">Document Automation</div>
+                            <div class="skill-desc">Generate reports, summaries, and process documents</div>
+                        </div>
+                        <div class="skill-card" onclick="activateSkill(this, 'data-processing')">
+                            <div class="skill-icon">📊</div>
+                            <div class="skill-name">Data Processing</div>
+                            <div class="skill-desc">Analyze and transform complex datasets automatically</div>
+                        </div>
+                        <div class="skill-card" onclick="activateSkill(this, 'customer-service')">
+                            <div class="skill-icon">💬</div>
+                            <div class="skill-name">Customer Service</div>
+                            <div class="skill-desc">Automate responses and ticket routing</div>
+                        </div>
+                        <div class="skill-card" onclick="activateSkill(this, 'hr-onboarding')">
+                            <div class="skill-icon">👥</div>
+                            <div class="skill-name">HR Onboarding</div>
+                            <div class="skill-desc">Streamline employee onboarding processes</div>
+                        </div>
+                        <div class="skill-card" onclick="activateSkill(this, 'it-support')">
+                            <div class="skill-icon">🔧</div>
+                            <div class="skill-name">IT Support</div>
+                            <div class="skill-desc">Automate ticket resolution and system monitoring</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chat Panel -->
+                <div class="panel chat-panel">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message cora">
+                                <div class="message-bubble">
+                                    <strong>Welcome to CORA powered by Watsonx Orchestrate!</strong><br><br>
+                                    I'm designed to transform how you work by automating repetitive tasks and orchestrating workflows across your tools. I can help you:<br><br>
+                                    • 🤖 Automate multi-step business processes<br>
+                                    • 📊 Generate intelligent reports and summaries<br>
+                                    • 🔄 Coordinate workflows across systems<br>
+                                    • 💼 Handle routine customer service tasks<br>
+                                    • 👥 Streamline HR and onboarding processes<br><br>
+                                    What repetitive task would you like me to automate today?
+                                </div>
+                                <div class="message-time">Just now</div>
                             </div>
-                            <div class="message-time">Just now</div>
+                        </div>
+                        <div class="chat-input-container">
+                            <textarea class="chat-input" id="chatInput" placeholder="Describe a repetitive task you'd like to automate (e.g., 'Process monthly sales reports')"></textarea>
+                            <div class="controls">
+                                <button class="btn btn-primary btn-icon" onclick="sendMessage()">➤</button>
+                                <button class="btn btn-secondary btn-icon" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+                            </div>
+                        </div>
+                        <div class="controls" style="margin-top: 15px;">
+                            <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
+                            <button class="btn btn-teal" onclick="showDemoWorkflow()">Demo Workflow</button>
+                            <button class="btn btn-primary" onclick="showAutomationIdeas()">Get Automation Ideas</button>
+                            <button class="btn btn-primary" onclick="generateEmailDraft()">Draft Email</button>
+                            <button class="btn btn-teal" onclick="generateWeeklyReport()">Weekly Report (PDF)</button>
                         </div>
                     </div>
-                    <div class="chat-input-container">
-                        <textarea class="chat-input" id="chatInput" placeholder="Describe a repetitive task you'd like to automate (e.g., 'Process monthly sales reports')"></textarea>
-                        <div class="controls">
-                            <button class="btn btn-primary btn-icon" onclick="sendMessage()">➤</button>
-                            <button class="btn btn-secondary btn-icon" id="voiceBtn" onclick="toggleVoice()">🎤</button>
+                </div>
+                <!-- Status Panel -->
+                <div class="panel status-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Orchestration Status</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">WORKFLOWS ACTIVE</div>
+                        <div class="status-value">12/15</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">TASKS AUTOMATED TODAY</div>
+                        <div class="status-value" id="tasksCompleted">47</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">TIME SAVED</div>
+                        <div class="status-value" id="timeSaved">18.5 hours</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">PROCESS EFFICIENCY</div>
+                        <div class="status-value">+42%</div>
+                    </div>
+                    <div class="workflow-visual">
+                        <div class="panel-title" style="margin-bottom: 15px;">Active Workflow</div>
+                        <div class="workflow-step">
+                            <div class="step-number">1</div>
+                            <div>Receive Task Request</div>
                         </div>
-                    </div>
-                    <div class="controls" style="margin-top: 15px;">
-                        <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
-                        <button class="btn btn-teal" onclick="showDemoWorkflow()">Demo Workflow</button>
-                        <button class="btn btn-primary" onclick="showAutomationIdeas()">Get Automation Ideas</button>
-                        <button class="btn btn-primary" onclick="generateEmailDraft()">Draft Email</button>
-                        <button class="btn btn-teal" onclick="generateWeeklyReport()">Weekly Report (PDF)</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Status Panel -->
-            <div class="panel status-panel">
-                <div class="panel-header">
-                    <div class="panel-title">Orchestration Status</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">WORKFLOWS ACTIVE</div>
-                    <div class="status-value">12/15</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">TASKS AUTOMATED TODAY</div>
-                    <div class="status-value" id="tasksCompleted">47</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">TIME SAVED</div>
-                    <div class="status-value" id="timeSaved">18.5 hours</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">PROCESS EFFICIENCY</div>
-                    <div class="status-value">+42%</div>
-                </div>
-                <div class="workflow-visual">
-                    <div class="panel-title" style="margin-bottom: 15px;">Active Workflow</div>
-                    <div class="workflow-step">
-                        <div class="step-number">1</div>
-                        <div>Receive Task Request</div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">2</div>
-                        <div>Analyze with Watsonx.ai</div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">3</div>
-                        <div>Orchestrate Tools & Systems</div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">4</div>
-                        <div>Execute Digital Skills</div>
-                    </div>
-                    <div class="workflow-step">
-                        <div class="step-number">5</div>
-                        <div>Deliver Results & Notify</div>
+                        <div class="workflow-step">
+                            <div class="step-number">2</div>
+                            <div>Analyze with Watsonx.ai</div>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-number">3</div>
+                            <div>Orchestrate Tools & Systems</div>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-number">4</div>
+                            <div>Execute Digital Skills</div>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-number">5</div>
+                            <div>Deliver Results & Notify</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -661,26 +703,23 @@
                 </div>
             </div>
         </div>
+        <footer>
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link" onclick="showBusinessImpact()">Business Value</a>
+                    <a href="#" class="footer-link" onclick="showUseCases()">Use Cases</a>
+                    <a href="#" class="footer-link" onclick="showIntegration()">Integration</a>
+                    <a href="#" class="footer-link" onclick="showSecurity()">Security & Compliance</a>
+                </div>
+                <div class="footer-text">
+                    <span>CORA &mdash; Transforming work through AI automation</span>
+                </div>
+            </div>
+        </footer>
     </div>
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#" class="footer-link" onclick="showBusinessImpact()">Business Value</a>
-                <a href="#" class="footer-link" onclick="showUseCases()">Use Cases</a>
-                <a href="#" class="footer-link" onclick="showIntegration()">Integration</a>
-                <a href="#" class="footer-link" onclick="showSecurity()">Security & Compliance</a>
-            </div>
-            <div class="footer-text">
-                <span>CORA &mdash; Transforming work through AI automation</span>
-            </div>
-        </div>
-    </footer>
-    <!-- JavaScript unchanged from your prior code: paste here as is -->
+    <!-- JavaScript from your original code, unchanged -->
     <script>
-        // (Insert your script)
-        // For brevity and so this answer fits, reuse your existing <script> from your post
-        
-        // No JavaScript changes are needed for fullscreen/layout.
+        // (PASTE YOUR EXISTING SCRIPT HERE UNCHANGED)
     </script>
     <!-- html2pdf bundle: converts HTML to PDF client-side -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
